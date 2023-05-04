@@ -6,7 +6,7 @@
 
     <groupId>dev.bronzylobster</groupId>
     <artifactId>StarRPChat</artifactId>
-    <version>0.5.0-24</version>
+    <version>0.5.1-25</version>
     <packaging>jar</packaging>
 
     <name>StarRPChat</name>

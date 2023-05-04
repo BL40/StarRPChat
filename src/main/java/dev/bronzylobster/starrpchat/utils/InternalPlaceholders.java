@@ -14,9 +14,9 @@ public class InternalPlaceholders {
         result = input
                 .replace("%name%", p.getName())
                 .replace("%display_name%", LegacyComponentSerializer.legacyAmpersand().serialize(p.displayName()))
-                .replace("%pos_x%", String.valueOf(loc.x()))
-                .replace("%pos_y%", String.valueOf(loc.y()))
-                .replace("%pos_z%", String.valueOf(loc.z()))
+                .replace("%pos_x%", String.valueOf(loc.blockX()))
+                .replace("%pos_y%", String.valueOf(loc.blockY()))
+                .replace("%pos_z%", String.valueOf(loc.blockZ()))
                 .replace("%level%", String.valueOf(p.getLevel()))
                 .replace("%ping%", String.valueOf(p.getPing()))
                 .replace("%dim%", p.getWorld().getEnvironment().name());

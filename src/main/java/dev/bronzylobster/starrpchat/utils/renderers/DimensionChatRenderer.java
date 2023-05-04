@@ -24,13 +24,20 @@ public class DimensionChatRenderer implements ChatRenderer {
         assert dimensionChatSymbol != null : "DimensionChatSymbol is not exists";
         assert format != null: "DimensionChatFormat is not exists";
         format = PlayerPlaceholders(format, player);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            format = PlaceholderAPI.setPlaceholders(player, format);
+        }
+
         format = format
                 .replace("&", "§")
                 .replace("%message%", msg)
                 .replaceFirst(dimensionChatSymbol, "");
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            format = PlaceholderAPI.setPlaceholders(player, format);
+        if (player.hasPermission("srpc.chat.placeholders")) {
+            format = PlayerPlaceholders(format, player);
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                format = PlaceholderAPI.setPlaceholders(player, format);
+            }
         }
 
         return LegacyComponentSerializer.legacyAmpersand().deserialize(format);

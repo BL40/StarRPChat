@@ -26,13 +26,20 @@ public class GlobalChatRenderer implements ChatRenderer {
         assert format != null: "GlobalChatFormat is not exists";
         assert rangeOverrideSymbol != null : "RangeOverrideSymbol is not exists";
         format = PlayerPlaceholders(format, player);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            format = PlaceholderAPI.setPlaceholders(player, format);
+        }
+
         format = format
                 .replace("&", "§")
                 .replace("%message%", msg)
                 .replaceFirst(rangeOverrideSymbol, "");
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            format = PlaceholderAPI.setPlaceholders(player, format);
+        if (player.hasPermission("srpc.chat.placeholders")) {
+            format = PlayerPlaceholders(format, player);
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                format = PlaceholderAPI.setPlaceholders(player, format);
+            }
         }
 
         return LegacyComponentSerializer.legacyAmpersand().deserialize(format);

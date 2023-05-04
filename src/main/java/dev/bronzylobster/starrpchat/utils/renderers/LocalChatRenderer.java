@@ -24,11 +24,19 @@ public class LocalChatRenderer implements ChatRenderer {
 
         assert format != null: "LocalChatFormat is not exists";
         format = PlayerPlaceholders(format, player);
-        format = format.replace("&", "§").replace("%message%", msg);
-
-
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             format = PlaceholderAPI.setPlaceholders(player, format);
+        }
+
+        format = format
+                .replace("&", "§")
+                .replace("%message%", msg);
+
+        if (player.hasPermission("srpc.chat.placeholders")) {
+            format = PlayerPlaceholders(format, player);
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                format = PlaceholderAPI.setPlaceholders(player, format);
+            }
         }
 
         return LegacyComponentSerializer.legacyAmpersand().deserialize(format);

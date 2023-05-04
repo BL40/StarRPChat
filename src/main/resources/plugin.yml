@@ -6,3 +6,8 @@ author: BronzyLobster40
 prefix: SRPC
 softdepend:
   - PlaceholderAPI
+permissions:
+  srpc.chat.placeholders:
+    description: Allows to use placeholders in chat
+    default: false
+

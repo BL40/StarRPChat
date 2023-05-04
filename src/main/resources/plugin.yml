@@ -1,0 +1,8 @@
+name: StarRPChat
+version: '${project.version}'
+main: dev.bronzylobster.starrpchat.StarRPChat
+api-version: 1.19
+author: BronzyLobster40
+prefix: SRPC
+softdepend:
+  - PlaceholderAPI

@@ -1,0 +1,10 @@
+RangeMode:
+  Enabled: true
+  RangeOverrideSymbol: "!"
+  RangeDistance: 100.0
+  GlobalChatFormat: "%name% &e>>> &r%message%"
+  LocalChatFormat: "loc %name% &a>>> &r%message%"
+DimensionMode:
+  Enabled: true
+  DimensionChatSymbol: "?"
+  DimensionChatFormat: "%dim% %name% &e>>> &r%message%"

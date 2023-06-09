@@ -6,7 +6,7 @@
 
     <groupId>dev.bronzylobster</groupId>
     <artifactId>StarRPChat</artifactId>
-    <version>0.5.1-25</version>
+    <version>0.6.0-28</version>
     <packaging>jar</packaging>
 
     <name>StarRPChat</name>
@@ -23,8 +23,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -78,6 +78,12 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

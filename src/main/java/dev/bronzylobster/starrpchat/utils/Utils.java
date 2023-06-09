@@ -41,4 +41,11 @@ public class Utils {
         }
         return viewers;
     }
+
+    public static String longTimeConverter(long time) {
+        return Math.floorDiv(time, 3600000 * 24) + "d "
+                + Math.floorDiv(time, 3600000) + "h "
+                + Math.floorDiv(time, 60000) + "m "
+                + Math.floorDiv(time, 1000) + "s ";
+    }
 }

@@ -1,10 +1,14 @@
 package dev.bronzylobster.starrpchat;
 
+import dev.bronzylobster.starrpchat.commands.MuteCommand;
 import dev.bronzylobster.starrpchat.handlers.ChatListener;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
 public final class StarRPChat extends JavaPlugin {
 
+    @Getter
     private static StarRPChat instance;
 
     @Override
@@ -15,6 +19,8 @@ public final class StarRPChat extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
 
+        new MuteCommand();
+
         this.getLogger().info("StarRPChat enabled!");
         this.getLogger().info("Nice playing!");
 
@@ -23,13 +29,10 @@ public final class StarRPChat extends JavaPlugin {
         } else {
             this.getLogger().warning("PlaceholderAPI not installed!");
         }
+
     }
 
     @Override
     public void onDisable() {
-    }
-
-    public static StarRPChat getInstance() {
-        return instance;
     }
 }

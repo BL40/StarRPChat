@@ -5,7 +5,9 @@ import io.papermc.paper.chat.ChatRenderer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -18,30 +20,36 @@ public class GlobalChatRenderer implements ChatRenderer {
     FileConfiguration config = StarRPChat.getInstance().getConfig();
 
     @Override
-    public @NotNull Component render(@NotNull Player player, @NotNull Component playerDisplayName, @NotNull Component rawMessage, @NotNull Audience audience) {
+    public @NotNull Component render(@NotNull Player player, @NotNull Component playerDisplayName, @NotNull Component message, @NotNull Audience audience) {
         String format = config.getString("RangeMode.GlobalChatFormat");
+        assert format != null : "RangeMode.GlobalChatFormat not exists";
         String rangeOverrideSymbol = config.getString("RangeMode.RangeOverrideSymbol");
-        String msg = LegacyComponentSerializer.legacyAmpersand().serialize(rawMessage);
+        assert rangeOverrideSymbol != null : "RangeMode.RangeOverrideSymbol not exists";
 
-        assert format != null: "GlobalChatFormat is not exists";
-        assert rangeOverrideSymbol != null : "RangeOverrideSymbol is not exists";
+        MiniMessage minimessage = MiniMessage.builder()
+                .tags(TagResolver.builder()
+                        .resolver(StandardTags.color())
+                        .resolver(StandardTags.decorations())
+                        .build()
+                )
+                .build();
         format = PlayerPlaceholders(format, player);
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             format = PlaceholderAPI.setPlaceholders(player, format);
         }
-
-        format = format
-                .replace("&", "§")
-                .replace("%message%", msg)
+        String sMessage = minimessage.serialize(message);
+        sMessage = format
+                .replace("%message%", sMessage)
                 .replaceFirst(rangeOverrideSymbol, "");
 
         if (player.hasPermission("srpc.chat.placeholders")) {
-            format = PlayerPlaceholders(format, player);
+            sMessage = PlayerPlaceholders(sMessage, player);
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                format = PlaceholderAPI.setPlaceholders(player, format);
+                sMessage = PlaceholderAPI.setPlaceholders(player, sMessage);
             }
         }
+        message = minimessage.deserialize(sMessage);
 
-        return LegacyComponentSerializer.legacyAmpersand().deserialize(format);
+        return message;
     }
 }

@@ -1,8 +1,8 @@
 package dev.bronzylobster.starrpchat.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -22,5 +22,36 @@ public class InternalPlaceholders {
                 .replace("%dim%", p.getWorld().getEnvironment().name());
 
         return result;
+    }
+
+    public static Component PlayerPlaceholders(Component input, Player p) {
+        Location loc = p.getLocation();
+
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(p.getName())
+                .match("%name%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(p.displayName())
+                .match("%display_name%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(String.valueOf(loc.blockX()))
+                .match("%pos_x%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(String.valueOf(loc.blockY()))
+                .match("%pos_y%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(String.valueOf(loc.blockZ()))
+                .match("%pos_z%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(String.valueOf(p.getLevel()))
+                .match("%level%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(String.valueOf(p.getPing()))
+                .match("%ping%").build());
+        input = input.replaceText(TextReplacementConfig.builder()
+                .replacement(p.getWorld().getEnvironment().name())
+                .match("%dim%").build());
+
+        return input;
     }
 }

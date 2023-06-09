@@ -12,4 +12,10 @@ permissions:
   srpc.chat.placeholders:
     description: Allows to use placeholders in chat
     default: false
+  srpc.chat.mute:
+    default: op
+commands:
+  mute:
+    permission: srpc.chat.mute
+
 

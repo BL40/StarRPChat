@@ -1,8 +1,11 @@
 package dev.bronzylobster.starrpchat;
 
+import dev.bronzylobster.starrpchat.commands.Completers.MuteCompleter;
 import dev.bronzylobster.starrpchat.commands.MuteCommand;
 import dev.bronzylobster.starrpchat.handlers.ChatListener;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,5 +37,11 @@ public final class StarRPChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
+    }
+
+    public static void debug(String s) {
+        if (getInstance().getConfig().getBoolean("debug")) {
+            Bukkit.broadcast(Component.text("[DEBUG] " + s).color(TextColor.color(0xFF0000)));
+        }
     }
 }

@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -21,10 +22,11 @@ public class GlobalChatRenderer implements ChatRenderer {
 
     @Override
     public @NotNull Component render(@NotNull Player player, @NotNull Component playerDisplayName, @NotNull Component message, @NotNull Audience audience) {
-        String format = config.getString("RangeMode.GlobalChatFormat");
-        assert format != null : "RangeMode.GlobalChatFormat not exists";
+        String sformat = config.getString("RangeMode.GlobalChatFormat");
+        assert sformat != null : "RangeMode.GlobalChatFormat not exists";
         String rangeOverrideSymbol = config.getString("RangeMode.RangeOverrideSymbol");
         assert rangeOverrideSymbol != null : "RangeMode.RangeOverrideSymbol not exists";
+        Component cFormat = LegacyComponentSerializer.legacyAmpersand().deserialize(sformat);
 
         MiniMessage minimessage = MiniMessage.builder()
                 .tags(TagResolver.builder()
@@ -33,6 +35,7 @@ public class GlobalChatRenderer implements ChatRenderer {
                         .build()
                 )
                 .build();
+        String format = minimessage.serialize(cFormat);
         format = PlayerPlaceholders(format, player);
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             format = PlaceholderAPI.setPlaceholders(player, format);

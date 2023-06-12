@@ -1,17 +1,15 @@
 package dev.bronzylobster.starrpchat.commands;
 
 import dev.bronzylobster.starrpchat.StarRPChat;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCommand implements CommandExecutor {
-    public AbstractCommand(String c) {
-        PluginCommand pluginCommand = StarRPChat.getInstance().getCommand(c);
+    public AbstractCommand(String command, TabCompleter completer) {
+        PluginCommand pluginCommand = StarRPChat.getInstance().getCommand(command);
         if (pluginCommand != null) {
             pluginCommand.setExecutor(this);
+            pluginCommand.setTabCompleter(completer);
         }
     }
 

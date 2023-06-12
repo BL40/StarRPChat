@@ -11,13 +11,13 @@ public class Database {
     private final String url;
 
     public Database() throws Exception {
-        url = "jdcb:sqlite:plugins/StarRPChat/database.db";
-        Class.forName("org.sqlite.JDCB").getConstructor().newInstance();
+        url = "jdbc:sqlite:plugins/StarRPChat/database.db";
+        Class.forName("org.sqlite.JDBC").getConstructor().newInstance();
 
         Connection c = getConnection();
         Statement s = c.createStatement();
 
-        s.executeUpdate("CREATE TABLE IF NOT EXISTS mute ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'player' TEXT UNIQUE, 'time' BIGINT, 'reason' TEXT, 'updateTime' BIGINT)");
+        s.executeUpdate("CREATE TABLE IF NOT EXISTS mute ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'player' TEXT, 'time' BIGINT, 'reason' TEXT, 'updateTime' BIGINT)");
 
         s.close();
         c.close();
@@ -37,12 +37,12 @@ public class Database {
             long time = rs.getLong(1);
             long u_time = rs.getLong(2);
             time = time - (s_time - u_time);
-
-            setMuteTime(id, time);
-            setUpdateTime(id, s_time);
             
             s.close();
             c.close();
+
+            setMuteTime(id, time);
+            setUpdateTime(id, s_time);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,7 +53,7 @@ public class Database {
             Connection c = getConnection();
             Statement s = c.createStatement();
 
-            s.executeUpdate("INSERT INTO mute VALUES ('" + nick + "', '" + time + "', '" + reason + "', '" + s_time + "')");
+            s.executeUpdate("INSERT INTO mute (player, time, reason, updateTime) VALUES ('" + nick + "', '" + time + "', '" + reason + "', '" + s_time + "')");
 
             s.close();
             c.close();
@@ -69,7 +69,7 @@ public class Database {
 
             String nick = p.getName();
 
-            s.executeUpdate("INSERT INTO mute VALUES ('" + nick + "', " + time + ", '" + reason + "', " + s_time + ")");
+            s.executeUpdate("INSERT INTO mute (player, time, reason, updateTime) VALUES ('" + nick + "', " + time + ", '" + reason + "', " + s_time + ")");
 
             s.close();
             c.close();
@@ -83,11 +83,12 @@ public class Database {
             Connection c = getConnection();
             Statement s = c.createStatement();
 
-            s.executeUpdate("UPDATE mute SET time = " + time + "WHERE player = '" + nick + "'");
-            setUpdateTime(getID(nick), System.currentTimeMillis());
+            s.executeUpdate("UPDATE mute SET time = " + time + " WHERE player = '" + nick + "'");
 
             s.close();
             c.close();
+
+            setUpdateTime(getID(nick), System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,11 +101,12 @@ public class Database {
 
             String nick = p.getName();
 
-            s.executeUpdate("UPDATE mute SET time = " + time + "WHERE player = '" + nick + "'");
-            setUpdateTime(getID(nick), System.currentTimeMillis());
+            s.executeUpdate("UPDATE mute SET time = " + time + " WHERE player = '" + nick + "'");
 
             s.close();
             c.close();
+
+            setUpdateTime(getID(nick), System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,11 +117,12 @@ public class Database {
             Connection c = getConnection();
             Statement s = c.createStatement();
 
-            s.executeUpdate("UPDATE mute SET time = " + time + "WHERE id = " + id);
-            setUpdateTime(id, System.currentTimeMillis());
+            s.executeUpdate("UPDATE mute SET time = " + time + " WHERE id = " + id);
 
             s.close();
             c.close();
+
+            setUpdateTime(id, System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,15 +130,15 @@ public class Database {
 
     public boolean isMuted(String nick) {
         try {
+            timeUpdate(getID(nick));
+
             Connection c = getConnection();
             Statement s = c.createStatement();
 
             boolean result;
             int count;
 
-            timeUpdate(getID(nick));
-
-            ResultSet rs = s.executeQuery("COUNT(*) FROM mute WHERE player = '" + nick + "'");
+            ResultSet rs = s.executeQuery("SELECT COUNT(*) FROM mute WHERE player = '" + nick + "'");
             count = rs.getInt(1);
             result = count > 0;
 
@@ -151,16 +154,17 @@ public class Database {
 
     public boolean isMuted(OfflinePlayer p) {
         try {
+            String nick = p.getName();
+
+            timeUpdate(getID(nick));
+
             Connection c = getConnection();
             Statement s = c.createStatement();
 
             boolean result;
             int count;
-            String nick = p.getName();
 
-            timeUpdate(getID(nick));
-
-            ResultSet rs = s.executeQuery("COUNT(*) FROM mute WHERE player = '" + nick + "'");
+            ResultSet rs = s.executeQuery("SELECT COUNT(*) FROM mute WHERE player = '" + nick + "'");
             count = rs.getInt(1);
             result = count > 0;
 
@@ -176,13 +180,12 @@ public class Database {
 
     public long getMuteTime(String nick) {
         try {
+            timeUpdate(getID(nick));
+
             Connection c = getConnection();
             Statement s = c.createStatement();
 
             long count;
-
-            timeUpdate(getID(nick));
-
             ResultSet rs = s.executeQuery("SELECT time FROM mute WHERE player = '" + nick + "'");
             count = rs.getLong(1);
 
@@ -198,14 +201,14 @@ public class Database {
 
     public long getMuteTime(OfflinePlayer p) {
         try {
-            Connection c = getConnection();
-            Statement s = c.createStatement();
-
-            long count;
             String nick = p.getName();
 
             timeUpdate(getID(nick));
 
+            Connection c = getConnection();
+            Statement s = c.createStatement();
+
+            long count;
             ResultSet rs = s.executeQuery("SELECT time FROM mute WHERE player = '" + nick + "'");
             count = rs.getLong(1);
 
@@ -224,7 +227,7 @@ public class Database {
             Connection c = getConnection();
             Statement s = c.createStatement();
 
-            s.executeUpdate("UPDATE mute SET updateTime = " + time + "WHERE ID = " + id);
+            s.executeUpdate("UPDATE mute SET updateTime = " + time + " WHERE ID = " + id);
 
             s.close();
             c.close();

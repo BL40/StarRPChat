@@ -43,9 +43,11 @@ public class Utils {
     }
 
     public static String longTimeConverter(long time) {
-        return Math.floorDiv(time, 3600000 * 24) + "d "
-                + Math.floorDiv(time, 3600000) + "h "
-                + Math.floorDiv(time, 60000) + "m "
-                + Math.floorDiv(time, 1000) + "s ";
+        long d = time/1000/60/60/24;
+        long h = time/1000/60/60 - d*24;
+        long m = time/1000/60 - (h + d*24)*60;
+        long s = time/1000 - (m + (h + d*24)*60)*60;
+
+        return d + "d " + h + "h " + m + "m " + s + "s";
     }
 }

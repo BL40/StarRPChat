@@ -1,3 +1,4 @@
+debug: true
 RangeMode:
   Enabled: true
   RangeOverrideSymbol: "!"
@@ -6,5 +7,5 @@ RangeMode:
   LocalChatFormat: "loc %name% &a>>> &r%message%"
 DimensionMode:
   Enabled: true
-  DimensionChatSymbol: "?"
+  DimensionChatSymbol: "@"
   DimensionChatFormat: "%dim% %name% &e>>> &r%message%"

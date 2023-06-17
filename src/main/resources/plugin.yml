@@ -14,8 +14,12 @@ permissions:
     default: false
   srpc.chat.mute:
     default: op
+  srpc.chat.unmute:
+    default: op
 commands:
   mute:
     permission: srpc.chat.mute
+  unmute:
+    permission: srpc.chat.unmute
 
 

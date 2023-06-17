@@ -2,6 +2,7 @@ package dev.bronzylobster.starrpchat;
 
 import dev.bronzylobster.starrpchat.commands.Completers.MuteCompleter;
 import dev.bronzylobster.starrpchat.commands.MuteCommand;
+import dev.bronzylobster.starrpchat.commands.UnmuteCommand;
 import dev.bronzylobster.starrpchat.handlers.ChatListener;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -23,6 +24,7 @@ public final class StarRPChat extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
 
         new MuteCommand();
+        new UnmuteCommand();
 
         this.getLogger().info("StarRPChat enabled!");
         this.getLogger().info("Nice playing!");

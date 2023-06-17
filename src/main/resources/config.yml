@@ -1,4 +1,4 @@
-debug: true
+debug: false
 RangeMode:
   Enabled: true
   RangeOverrideSymbol: "!"

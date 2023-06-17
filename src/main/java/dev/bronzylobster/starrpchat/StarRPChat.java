@@ -1,9 +1,9 @@
 package dev.bronzylobster.starrpchat;
 
-import dev.bronzylobster.starrpchat.commands.Completers.MuteCompleter;
 import dev.bronzylobster.starrpchat.commands.MuteCommand;
 import dev.bronzylobster.starrpchat.commands.UnmuteCommand;
 import dev.bronzylobster.starrpchat.handlers.ChatListener;
+import dev.bronzylobster.starrpchat.utils.Config;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -31,6 +31,7 @@ public final class StarRPChat extends JavaPlugin {
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             this.getLogger().info("PlaceholderAPI installed!");
+
         } else {
             this.getLogger().warning("PlaceholderAPI not installed!");
         }
@@ -42,7 +43,7 @@ public final class StarRPChat extends JavaPlugin {
     }
 
     public static void debug(String s) {
-        if (getInstance().getConfig().getBoolean("debug")) {
+        if (getInstance().getConfig().getBoolean(Config.DEBUG_ENABLED.getPath())) {
             Bukkit.broadcast(Component.text("[DEBUG] " + s).color(TextColor.color(0xFF0000)));
         }
     }

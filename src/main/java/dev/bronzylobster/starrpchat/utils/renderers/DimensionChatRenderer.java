@@ -1,6 +1,7 @@
 package dev.bronzylobster.starrpchat.utils.renderers;
 
 import dev.bronzylobster.starrpchat.StarRPChat;
+import dev.bronzylobster.starrpchat.utils.Config;
 import io.papermc.paper.chat.ChatRenderer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -20,9 +21,9 @@ public class DimensionChatRenderer implements ChatRenderer {
     FileConfiguration config = StarRPChat.getInstance().getConfig();
     @Override
     public @NotNull Component render(@NotNull Player player, @NotNull Component playerDisplayName, @NotNull Component message, @NotNull Audience audience) {
-        String sFormat = config.getString("DimensionMode.DimensionChatFormat");
+        String sFormat = config.getString(Config.DIM_CHAT_FORMAT.getPath());
         assert sFormat != null : "DimensionMode.DimensionChatFormat not exists";
-        String dimensionChatSymbol = config.getString("DimensionMode.DimensionChatSymbol");
+        String dimensionChatSymbol = config.getString(Config.DIM_CHAT_SYMBOL.getPath());
         assert dimensionChatSymbol != null : "DimensionMode.DimensionChatSymbol not exists";
         Component cFormat = LegacyComponentSerializer.legacyAmpersand().deserialize(sFormat);
 

@@ -1,7 +1,10 @@
 package dev.bronzylobster.starrpchat.handlers;
 
 import dev.bronzylobster.starrpchat.StarRPChat;
+import dev.bronzylobster.starrpchat.utils.Config;
 import dev.bronzylobster.starrpchat.utils.Database;
+import dev.bronzylobster.starrpchat.utils.InternalPlaceholders;
+import dev.bronzylobster.starrpchat.utils.Utils;
 import dev.bronzylobster.starrpchat.utils.renderers.DimensionChatRenderer;
 import dev.bronzylobster.starrpchat.utils.renderers.GlobalChatRenderer;
 import dev.bronzylobster.starrpchat.utils.renderers.LocalChatRenderer;
@@ -11,7 +14,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,10 +40,12 @@ public class ChatListener implements Listener {
         String name = p.getName();
 
         if (db.isMuted(name)) {
-            if (db.getMuteTime(name) > 0) {
-                p.sendMessage(Component.text()
-                        .color(TextColor.color(0xFF0000))
-                        .content("You has been muted for " + longTimeConverter(db.getMuteTime(name)) + " with reason: " + db.getReason(name)));
+            if (!(0 >= db.getMuteTime(name))) {
+                String muted = config.getString(Config.MUTED.getPath());
+                assert muted != null : "Messages.muted is not exists";
+                muted = muted.replace("%time%", Utils.longTimeConverter(db.getMuteTime(name)))
+                        .replace("%reason%", db.getReason(name));
+                p.sendMessage(Utils.toComponent(InternalPlaceholders.PlayerPlaceholders(muted, p)));
                 e.setCancelled(true);
                 return;
             } else {
@@ -53,10 +57,10 @@ public class ChatListener implements Listener {
         ChatRenderer global = new GlobalChatRenderer();
         ChatRenderer local = new LocalChatRenderer();
         ChatRenderer dim = new DimensionChatRenderer();
-        String rangeOverrideSymbol = config.getString("RangeMode.RangeOverrideSymbol");
-        String dimensionChatSymbol = config.getString("DimensionMode.DimensionChatSymbol");
+        String rangeOverrideSymbol = config.getString(Config.RANGE_OVERRIDE_SYMBOL.getPath());
+        String dimensionChatSymbol = config.getString(Config.DIM_CHAT_SYMBOL.getPath());
 
-        if (config.getBoolean("RangeMode.Enabled")) {
+        if (config.getBoolean(Config.RANGEMODE_ENABLED.getPath())) {
             String stringMessage = PlainTextComponentSerializer.plainText().serialize(e.message());
 
             assert rangeOverrideSymbol != null : "RangeOverrideSymbol is not exists";
@@ -64,14 +68,16 @@ public class ChatListener implements Listener {
                 e.renderer(global);
             } else {
                 assert dimensionChatSymbol != null : "DimensionOverrideSymbol is not exists";
-                if (config.getBoolean("DimensionMode.Enabled") && stringMessage.startsWith(dimensionChatSymbol)) {
+                if (config.getBoolean(Config.DIMMODE_ENABLED.getPath()) && stringMessage.startsWith(dimensionChatSymbol)) {
                     e.viewers().clear();
                     e.viewers().addAll(getDimensionViewers(e.getPlayer()));
+                    e.viewers().add(Bukkit.getConsoleSender());
 
                     e.renderer(dim);
                 } else {
                     e.viewers().clear();
                     e.viewers().addAll(getLocalViewers(e.getPlayer()));
+                    e.viewers().add(Bukkit.getConsoleSender());
 
                     e.renderer(local);
                 }

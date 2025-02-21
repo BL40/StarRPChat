@@ -13,6 +13,13 @@ public abstract class AbstractCommand implements CommandExecutor {
         }
     }
 
+    public AbstractCommand(String command) {
+        PluginCommand pluginCommand = StarRPChat.getInstance().getCommand(command);
+        if (pluginCommand != null) {
+            pluginCommand.setExecutor(this);
+        }
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         execute(commandSender, s, strings);

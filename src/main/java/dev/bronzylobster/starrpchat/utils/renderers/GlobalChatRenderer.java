@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import dev.bronzylobster.starrpchat.utils.Config;
 
 import static dev.bronzylobster.starrpchat.utils.InternalPlaceholders.*;
 
@@ -22,9 +23,9 @@ public class GlobalChatRenderer implements ChatRenderer {
 
     @Override
     public @NotNull Component render(@NotNull Player player, @NotNull Component playerDisplayName, @NotNull Component message, @NotNull Audience audience) {
-        String sformat = config.getString("RangeMode.GlobalChatFormat");
+        String sformat = config.getString(Config.GLOBAL_CHAT_FORMAT.getPath());
         assert sformat != null : "RangeMode.GlobalChatFormat not exists";
-        String rangeOverrideSymbol = config.getString("RangeMode.RangeOverrideSymbol");
+        String rangeOverrideSymbol = config.getString(Config.RANGE_OVERRIDE_SYMBOL.getPath());
         assert rangeOverrideSymbol != null : "RangeMode.RangeOverrideSymbol not exists";
         Component cFormat = LegacyComponentSerializer.legacyAmpersand().deserialize(sformat);
 

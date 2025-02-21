@@ -1,10 +1,9 @@
 name: StarRPChat
 version: '${project.version}'
 main: dev.bronzylobster.starrpchat.StarRPChat
-api-version: 1.19
+api-version: 1.21
 authors:
   - BronzyLobster40
-  - FedorBaz
 prefix: SRPC
 softdepend:
   - PlaceholderAPI
@@ -16,10 +15,28 @@ permissions:
     default: op
   srpc.chat.unmute:
     default: op
+  srpc.wt:
+    default: true
+  srpc.spy:
+    default: false
 commands:
   mute:
     permission: srpc.chat.mute
   unmute:
     permission: srpc.chat.unmute
-
+  wt:
+    permission: srpc.wt
+  msg:
+    aliases:
+      - m
+      - tell
+      - dm
+  reply:
+    aliases:
+      - r
+  spy:
+    permission: "srpc.spy"
+    permission-message: "А ПО ЖОПЕ БЛЯТЬ, НЕХУЙ ПОДСМАТРИВАТЬ"
+  who:
+    description: useless
 

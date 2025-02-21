@@ -7,12 +7,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class InternalPlaceholders {
+
+
     public static String PlayerPlaceholders(String input, Player p) {
         String result;
         Location loc = p.getLocation();
 
         result = input
-                .replace("%name%", p.getName())
+                .replace("%player%", p.getName())
                 .replace("%display_name%", LegacyComponentSerializer.legacyAmpersand().serialize(p.displayName()))
                 .replace("%pos_x%", String.valueOf(loc.blockX()))
                 .replace("%pos_y%", String.valueOf(loc.blockY()))
@@ -29,7 +31,7 @@ public class InternalPlaceholders {
 
         input = input.replaceText(TextReplacementConfig.builder()
                 .replacement(p.getName())
-                .match("%name%").build());
+                .match("%player%").build());
         input = input.replaceText(TextReplacementConfig.builder()
                 .replacement(p.displayName())
                 .match("%display_name%").build());

@@ -2,8 +2,14 @@ package dev.bronzylobster.starrpchat.commands;
 
 import dev.bronzylobster.starrpchat.StarRPChat;
 import dev.bronzylobster.starrpchat.commands.Completers.MuteCompleter;
+import dev.bronzylobster.starrpchat.utils.Config;
 import dev.bronzylobster.starrpchat.utils.Database;
+import dev.bronzylobster.starrpchat.utils.InternalPlaceholders;
+import dev.bronzylobster.starrpchat.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -16,6 +22,8 @@ public class MuteCommand extends AbstractCommand {
     public MuteCommand() {
         super("mute", new MuteCompleter());
     }
+    FileConfiguration config = StarRPChat.getInstance().getConfig();
+
     Database db;
     {
         try {
@@ -109,7 +117,7 @@ public class MuteCommand extends AbstractCommand {
                 intDebug("[execute] sTime = " + sTime);
 
                 arrReason.remove(0);
-                if (arrReason.size() == 0) {
+                if (arrReason.isEmpty()) {
                     reason[0] = "Muted for " + sTime + " by " + sender.getName();
                     intDebug("[execute] arrReason = 0");
                 } else {
@@ -127,7 +135,12 @@ public class MuteCommand extends AbstractCommand {
                     db.addMuted(args[0], time[0], reason[0], s_time);
                     intDebug("[execute] " + args[0] + " is not muted");
                 }
-                sender.sendMessage(args[0] + " has been muted for " + sTime + " with reason: " + reason[0]);
+                String mute = config.getString(Config.MUTE.getPath());
+                assert mute != null : Config.MUTE.getPath() + " is not exists";
+                Player mutedP = (Player) Bukkit.getOfflinePlayer(args[0]);
+                mute = mute.replace("%time%", Utils.longTimeConverter(db.getMuteTime(args[0])))
+                        .replace("%reason%", db.getReason(args[0]));
+                sender.sendMessage(Utils.toComponent(InternalPlaceholders.PlayerPlaceholders(mute, mutedP)));
             }
         }.runTaskAsynchronously(StarRPChat.getInstance());
     }

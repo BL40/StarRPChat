@@ -1,11 +1,77 @@
+#ГАДИТ ВЕЗДЕ, НЕ ТРОГАЙ НАХУЙ, ОТ ГРЕХА ПОДАЛЬШЕ
 debug: false
+#ДЛЯ БОГДАНА, ЕСЛИ ЧТО-ТО ПОПРАВИТЬ ИЛИ ПОМЕНЯТЬ, НАПРИМЕР ЧАСТОТУ РАЦИИ УКАЗАТЬ ВЕЗДЕ, МАЯКНИ
+
+#Internal Placeholders:
+#For all:
+#Nickmane - %player%
+#Display name (with decorations or changed with other plugins) - %display_name%
+#Coordinate X - %pos_x%
+#Coordinate Y - %pos_y%
+#Coordinate Z - %pos_z%
+#Player level - %level%
+#Ping - %ping%
+#Player dimension - %dim%
+#=========================
+#ONLY FOR MUTED PLAYERS (may crash plugin, use only when it's used in example)
+#Remaining mute time (1h 1m 1s) - %time%
+#Reason for mute - %reason%
+#==========================
+#Next placeholders used in some places, ITS DON'T WORK, IF I DON'T WANT THIS:
+#Result of some commands (/wt try or /wt roll) - %result%
+#Dice for /wt roll - %max%
+#Message - %message%
+#Frequency for WT - %freq%
+#Sender of /msg - %sender%
+#Receiver of /msg - %receiver%
+
 RangeMode:
   Enabled: true
   RangeOverrideSymbol: "!"
   RangeDistance: 100.0
-  GlobalChatFormat: "%name% &e>>> &r%message%"
-  LocalChatFormat: "loc %name% &a>>> &r%message%"
+  GlobalChatFormat: "%player% &e>>> &r%message%"
+  LocalChatFormat: "loc %player% &a>>> &r%message%"
 DimensionMode:
   Enabled: true
   DimensionChatSymbol: "@"
-  DimensionChatFormat: "%dim% %name% &e>>> &r%message%"
+  DimensionChatFormat: "%dim% %player% &e>>> &r%message%"
+WT:
+  rollmax: 100
+  rollmin: 4
+Msg:
+  delay: 0
+Messages:
+  muted: "You has been muted for %time% with reason: %reason%"
+  mute: "%player% has been muted for %time% with reason: %reason%"
+  unmute: "%player% has been unmuted"
+  isnotmuted: "%player% is not muted now"
+  wt:
+    format: "[WT] %player% -> %message%"
+    hasnotfreq: "[WT] Your freq is null, use /wt set <freq>"
+    set: "[WT] You set new freq for WT: %freq%"
+    get: "[WT] Your freq: %freq%"
+    do: "[WT] %message% (%player%)"
+    me: "[WT] *%player% %message%"
+    try: "[WT] *%player% %message% | %result%"
+    tryWin: "Win"
+    tryLose: "Lose"
+    roll: "[WT] %player% roll %max% dice: %result%"
+  msg:
+    send: "You -> %receiver%: %message%"
+    receive: "%sender% -> You: %message%"
+    playerisoffline: "%receiver% offline now"
+    spy: "%sender% -> %receiver%: %message%"
+    spyon: "Spy is ON"
+    spyoff: "Spy is OFF"
+    noreply: "No someone who's reply"
+  join: "[+] %player%"
+  quit: "[-] %player%"
+#Nullable
+#List of available sounds: https://www.digminecraft.com/lists/sound_list_pc.php
+#PLEASE, don't take a mistake, idk how it will affect on plugin work
+Sound:
+  join: entity.arrow.hit_player
+  quit: entity.arrow.hit_player
+  msg: entity.arrow.hit_player
+  reply: entity.arrow.hit_player
+

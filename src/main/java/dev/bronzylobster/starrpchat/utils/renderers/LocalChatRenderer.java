@@ -1,6 +1,7 @@
 package dev.bronzylobster.starrpchat.utils.renderers;
 
 import dev.bronzylobster.starrpchat.StarRPChat;
+import dev.bronzylobster.starrpchat.utils.Config;
 import io.papermc.paper.chat.ChatRenderer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -22,7 +23,7 @@ public class LocalChatRenderer implements ChatRenderer {
 
     @Override
     public @NotNull Component render(@NotNull Player player, @NotNull Component playerDisplayName, @NotNull Component message, @NotNull Audience audience) {
-        String sFormat = config.getString("RangeMode.LocalChatFormat");
+        String sFormat = config.getString(Config.LOCAL_CHAT_FORMAT.getPath());
         assert sFormat != null : "RangeMode.LocalChatFormat not exists";
         Component cFormat = LegacyComponentSerializer.legacyAmpersand().deserialize(sFormat);
 
